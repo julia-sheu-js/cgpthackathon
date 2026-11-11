@@ -1,0 +1,6 @@
+"use client";
+import { useParams } from "next/navigation";
+import { AppShell } from "@/components/shell";
+import { useFoodBridge } from "@/components/providers";
+export default function Analytics(){const {listings,requests,collections}=useFoodBridge();const total=listings.reduce((s,l)=>s+l.total_quantity,0),approved=requests.filter(r=>r.status==="approved").reduce((s,r)=>s+r.approved_quantity,0);return <AppShell role="admin"><div className="page-header"><div><div className="eyebrow-small">Platform impact</div><h1>Analytics</h1><p>Monitor food redistribution across the network.</p></div></div><div className="metric-grid"><Metric label="Food listed" value={String(total)}/><Metric label="Food approved" value={String(approved)}/><Metric label="Remaining" value={String(Math.max(0,total-approved))}/><Metric label="Collections" value={String(collections.filter(c=>c.status==="completed").length)}/></div><div className="panel"><h2>Inventory overview</h2><p className="muted">Approved quantities are counted as claimed. Only completed collections should be counted as confirmed redistribution in public impact reporting.</p></div></AppShell>}
+function Metric({label,value}:{label:string;value:string}){return <div className="metric-card"><div className="metric-top">{label}</div><div className="metric-value">{value}</div></div>}

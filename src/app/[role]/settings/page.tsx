@@ -1,0 +1,6 @@
+"use client";
+import { useParams } from "next/navigation";
+import { AppShell } from "@/components/shell";
+import { useFoodBridge } from "@/components/providers";
+import type { Role } from "@/lib/types";
+export default function Settings(){const {role}=useParams<{role:Role}>();const {profile}=useFoodBridge();if(!["school","charity","admin"].includes(role))return null;return <AppShell role={role}><div className="page-header"><div><div className="eyebrow-small">Organization settings</div><h1>Organization profile</h1><p>Contact and organization information associated with this account.</p></div></div><div className="form-card"><div className="form-grid">{[["Organization",profile?.organization_name],["Account type",profile?.organization_type],["Email",profile?.email],["Phone",profile?.phone||"Not provided"],["Address",profile?.address||"Not provided"],["Verification",profile?.verified?"Verified":"Pending verification"]].map(([k,v])=><div className="field" key={k}><label>{k}</label><div style={{padding:"11px 12px",background:"#f6f8f6",borderRadius:8,fontSize:12}}>{v}</div></div>)}</div><p className="muted" style={{fontSize:11,marginTop:20}}>Profile editing and organization verification workflows can be added before onboarding real partners.</p></div></AppShell>}
